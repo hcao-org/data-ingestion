@@ -19,6 +19,7 @@ from googleapiclient.http import MediaIoBaseUpload
 INGEST_FOLDER_ID = "1hrpUcdFpjfTee-AS2LZINXJ8r2iQOw_e"
 REVIEW_FOLDER_ID = "152xJTWCOuabDVqkTwWY8uKatK-Z77Y91"
 PROCESSED_FOLDER_ID = "1vtJp9upDYHT7jqq2-BMRXbG4X5cy9xKf"
+MAX_FILES_PER_RUN = 5
 
 API = "https://api.makkyo.net/v1/chat/completions"
 MODEL = "Qwen/Qwen3.6-35B-A3B-FP8"
@@ -194,7 +195,10 @@ def debug_upload(data: bytes, name: str):
 
 def poll_and_process():
     results = []
-    for f in list_new_images(INGEST_FOLDER_ID):
+
+    files = list_new_images(INGEST_FOLDER_ID)[:MAX_FILES_PER_RUN]
+    logging.info(f"Found {len(files)} files to process this run (capped at {MAX_FILES_PER_RUN})")
+    for f in files:
         photo_bytes = None
         try:
             photo_bytes = download_file(f["id"])
