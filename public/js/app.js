@@ -92,6 +92,7 @@ function render(data) {
     onToggleReviewed(rowId, reviewed) {
       updateRow(rowId, { reviewed })
       updateProgress()
+      updateFinishButtonState()
     },
   })
 
@@ -104,25 +105,17 @@ function render(data) {
   const footer = document.createElement('footer')
   footer.className = 'review-page__footer'
 
-  const checkAllButton = document.createElement('button')
-  checkAllButton.type = 'button'
-  checkAllButton.className = 'review-page__check-all-button'
-  checkAllButton.textContent = 'Check all'
-  checkAllButton.addEventListener('click', () => grid.checkAll())
-  footer.appendChild(checkAllButton)
-
   const finishButton = document.createElement('button')
   finishButton.type = 'button'
   finishButton.className = 'review-page__finish-button'
   finishButton.textContent = 'Finish'
+
+  function updateFinishButtonState() {
+    finishButton.disabled = data.rows.some((row) => !row.reviewed)
+  }
+  updateFinishButtonState()
+
   finishButton.addEventListener('click', async () => {
-    const reviewedCount = data.rows.filter((row) => row.reviewed).length
-    if (reviewedCount < data.rows.length) {
-      const proceed = window.confirm(
-        `${data.rows.length - reviewedCount} row(s) are not marked as checked. Finish anyway?`,
-      )
-      if (!proceed) return
-    }
     finishButton.disabled = true
     finishButton.textContent = 'Finishing…'
     try {

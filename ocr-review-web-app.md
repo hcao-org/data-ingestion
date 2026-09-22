@@ -97,11 +97,6 @@ functions/              Cloud Function backing realApi.js - see "Google Sheets
   to fit its content on every keystroke (and once on load, via
   `requestAnimationFrame`, since `scrollHeight` isn't accurate until the
   element is actually laid out in the page).
-- **"Check all"**: sits in the footer next to Finish, marks every row as
-  checked without clicking each box individually. `reviewGrid.js` doesn't
-  render this button itself - `createReviewGrid()` returns
-  `{ element, checkAll }`, and `app.js` wires `checkAll` up to its own button
-  so it can live in the footer rather than by the grid.
 - **Footer is pinned to the bottom of the screen**: `.review-page` is
   `height: 100vh` (not `min-height`) with `flex-direction: column`, so the
   header/panes/footer always add up to exactly one screen - the footer never
@@ -294,9 +289,9 @@ for your team) and the folders shared with its email, same as above.
 
 - No pinch-to-zoom on touch for the image pane (mouse wheel + buttons only).
 - No auth - relies entirely on the token in the URL being unguessable.
-- No indication of *why* Finish should be disabled/blocked vs. just warning
-  (currently: confirm dialog if not all rows are checked, but Finish always
-  works).
+- Finish is disabled until every row is checked, but there's no visible
+  explanation of *why* it's disabled beyond the row-count progress text above
+  the grid.
 - The Google Sheets backend (see that section above) has two known gaps: no
   protection against two near-simultaneous requests for the same token both
   creating an "In Review" clone, and no step 13 equivalent - nothing emails

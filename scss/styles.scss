@@ -114,15 +114,6 @@ textarea {
     gap: 0.75rem;
   }
 
-  &__check-all-button {
-    padding: 0.6rem 1.5rem;
-    background: $color-bg;
-    color: $color-text;
-    border: 1px solid $color-border-strong;
-    border-radius: 6px;
-    font-weight: 600;
-  }
-
   &__finish-button {
     padding: 0.6rem 1.5rem;
     background: $color-primary;

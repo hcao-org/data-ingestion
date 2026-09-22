@@ -95,11 +95,10 @@ function makeColumnsResizable(table, headerCells) {
 }
 
 /**
- * Returns { element, checkAll }: `element` is the <table>, `checkAll` marks
- * every row as checked (the caller decides where to put a button for it - see
- * the footer in app.js). Fields are uncontrolled <textarea>s (built once from
- * `rows`, then left alone) - callbacks fire on every keystroke/toggle, but the
- * DOM itself is never rebuilt, so typing never loses cursor position or focus.
+ * Returns { element }: `element` is the <table>. Fields are uncontrolled
+ * <textarea>s (built once from `rows`, then left alone) - callbacks fire on
+ * every keystroke/toggle, but the DOM itself is never rebuilt, so typing
+ * never loses cursor position or focus.
  */
 export function createReviewGrid(rows, { onFieldChange, onToggleReviewed }) {
   const table = document.createElement('table')
@@ -113,7 +112,6 @@ export function createReviewGrid(rows, { onFieldChange, onToggleReviewed }) {
   table.appendChild(thead)
 
   const tbody = document.createElement('tbody')
-  const rowCheckboxes = []
 
   rows.forEach((row) => {
     const tr = document.createElement('tr')
@@ -130,7 +128,6 @@ export function createReviewGrid(rows, { onFieldChange, onToggleReviewed }) {
     })
     checkboxCell.appendChild(checkbox)
     tr.appendChild(checkboxCell)
-    rowCheckboxes.push({ row, tr, checkbox })
 
     COLUMNS.forEach((column) => {
       const td = document.createElement('td')
@@ -179,14 +176,5 @@ export function createReviewGrid(rows, { onFieldChange, onToggleReviewed }) {
   table.appendChild(tbody)
   makeColumnsResizable(table, [...headerRow.children])
 
-  function checkAll() {
-    rowCheckboxes.forEach(({ row, tr, checkbox }) => {
-      if (checkbox.checked) return
-      checkbox.checked = true
-      tr.classList.add('review-grid__row--reviewed')
-      onToggleReviewed(row.id, true)
-    })
-  }
-
-  return { element: table, checkAll }
+  return { element: table }
 }
