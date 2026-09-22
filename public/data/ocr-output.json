@@ -1,0 +1,114 @@
+{
+    "rows": [
+        {
+            "address": "123 NW Everett St",
+            "city": "Portland",
+            "email": "jimdoe@frontier.com",
+            "flags": [],
+            "name": "Jim Doe",
+            "phone": "503-111-1111",
+            "volunteerInterest": true,
+            "zip": "97209"
+        },
+        {
+            "address": "456 SE Hawthorne Blvd",
+            "city": "Portland",
+            "email": "jamesdoe@gmail.com",
+            "flags": [
+                "email_illegible",
+                "address_blurry"
+            ],
+            "name": "James Doe",
+            "phone": "503-222-2222",
+            "volunteerInterest": false,
+            "zip": "97214"
+        },
+        {
+            "address": "789 N Williams Ave",
+            "city": "Portland",
+            "email": "janedeer@gmail.com",
+            "flags": [],
+            "name": "Jane Deer",
+            "phone": "503-333-3333",
+            "volunteerInterest": true,
+            "zip": "97227"
+        },
+        {
+            "address": "321 SW Broadway",
+            "city": "Portland",
+            "email": "jendeer@gmail.com",
+            "flags": [
+                "address_blurry"
+            ],
+            "name": "Jen Deer",
+            "phone": "503-444-4444",
+            "volunteerInterest": true,
+            "zip": "97205"
+        },
+        {
+            "address": "654 NE Sandy Blvd",
+            "city": "Portland",
+            "email": "personmcperson@black.net",
+            "flags": [
+                "phone_shape"
+            ],
+            "name": "Person McPerson",
+            "phone": "",
+            "volunteerInterest": false,
+            "zip": "97232"
+        },
+        {
+            "address": "987 SE Division St",
+            "city": "Portland",
+            "email": "guymcperson@gmail.com",
+            "flags": [
+                "phone_shape"
+            ],
+            "name": "Guy McPerson",
+            "phone": "",
+            "volunteerInterest": true,
+            "zip": "97202"
+        },
+        {
+            "address": "159 N Interstate Ave",
+            "city": "Portland",
+            "email": "randomgal@protonmail.com",
+            "flags": [],
+            "name": "Random Gal",
+            "phone": "503-555-5555",
+            "volunteerInterest": false,
+            "zip": "97227"
+        },
+        {
+            "address": "753 SW Yamhill St",
+            "city": "Portland",
+            "email": "whoisit@phse.com",
+            "flags": [],
+            "name": "Who Are-You",
+            "phone": "555-555-5555",
+            "volunteerInterest": true,
+            "zip": "97205"
+        },
+        {
+            "address": "246 NE Alberta St",
+            "city": "Portland",
+            "email": "testtesterson@ac.net",
+            "flags": [],
+            "name": "Test Testerson",
+            "phone": "111-222-3333",
+            "volunteerInterest": false,
+            "zip": "97211"
+        },
+        {
+            "address": "864 SE Belmont St",
+            "city": "Portland",
+            "email": "anonymoushuman@yahoo.com",
+            "flags": [],
+            "name": "Anonymous Human",
+            "phone": "503-132-3421",
+            "volunteerInterest": true,
+            "zip": "97214"
+        }
+    ],
+    "warnings": []
+}

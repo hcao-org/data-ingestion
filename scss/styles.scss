@@ -1,0 +1,274 @@
+$color-text: #1f2933;
+$color-bg: #f5f6f8;
+$color-border: #e4e7eb;
+$color-border-strong: #cbd2d9;
+$color-error: #b91c1c;
+$color-warning-bg: #fff7ed;
+$color-warning-border: #f97316;
+$color-warning-text: #92400e;
+$color-success-bg: #f0fdf4;
+$color-primary: #2563eb;
+$color-primary-disabled: #93c5fd;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: $color-text;
+  background: $color-bg;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+// Review-grid fields are textareas (not <input>) so they can grow vertically -
+// see autoGrow() in reviewGrid.js.
+textarea {
+  font: inherit;
+  display: block;
+  width: 100%;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid $color-border-strong;
+  border-radius: 4px;
+  line-height: 1.3;
+  resize: none;
+  overflow: hidden;
+}
+
+.review-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  &__status {
+    padding: 3rem 1.5rem;
+    text-align: center;
+    font-size: 1.1rem;
+
+    &--error {
+      color: $color-error;
+    }
+  }
+
+  &__header {
+    flex-shrink: 0;
+    padding: 1rem 1.5rem;
+    background: #fff;
+    border-bottom: 1px solid $color-border;
+
+    h1 {
+      margin: 0 0 0.25rem;
+      font-size: 1.25rem;
+    }
+
+    p {
+      margin: 0 0 0.5rem;
+      color: #52606d;
+    }
+  }
+
+  &__warnings {
+    margin: 0 0 0.5rem;
+    padding-left: 1.25rem;
+    color: $color-warning-text;
+  }
+
+  &__error {
+    color: $color-error;
+    font-weight: 600;
+  }
+
+  &__progress {
+    font-weight: 600;
+  }
+
+  &__panes {
+    flex: 1;
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    min-height: 0;
+  }
+
+  &__grid-wrap {
+    flex: 1 1 33%;
+    overflow: auto;
+    background: #fff;
+    border: 1px solid $color-border;
+    border-radius: 6px;
+  }
+
+  &__footer {
+    flex-shrink: 0;
+    padding: 1rem 1.5rem;
+    background: #fff;
+    border-top: 1px solid $color-border;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+
+  &__check-all-button {
+    padding: 0.6rem 1.5rem;
+    background: $color-bg;
+    color: $color-text;
+    border: 1px solid $color-border-strong;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+
+  &__finish-button {
+    padding: 0.6rem 1.5rem;
+    background: $color-primary;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+
+    &:disabled {
+      background: $color-primary-disabled;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.image-pane {
+  flex: 1 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid $color-border;
+  border-radius: 6px;
+  overflow: hidden;
+  min-width: 0;
+
+  &__controls {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid $color-border;
+
+    button {
+      min-width: 2rem;
+      height: 2rem;
+      padding: 0 .75rem;
+      border: 1px solid $color-border-strong;
+      border-radius: 4px;
+      background: $color-bg;
+    }
+  }
+
+  &__viewport {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    background: #111;
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      transform-origin: 0 0;
+      user-select: none;
+    }
+  }
+}
+
+.review-grid {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9rem;
+
+  th,
+  td {
+    border: 1px solid $color-border;
+    padding: 0.4rem;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  th {
+    background: $color-bg;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    
+    &.name {
+      width: 190px;
+    }
+
+    &.email {
+      width: 260px;
+    }
+    
+    &.city {
+      width: 155px;
+    }
+
+    &.phone {
+      width: 145px;
+    }
+
+    &.zip {
+      width: 75px;
+    }
+
+    &.volunteer-interest {
+      width: 85px;
+    }
+  }
+
+  // Drag handle for column resizing - a sliver overlaid on the th's right
+  // border. `th` is already `position: sticky`, which is enough of a
+  // positioned ancestor for this to anchor to.
+  &__col-resizer {
+    position: absolute;
+    top: 0;
+    right: -3px;
+    width: 6px;
+    height: 100%;
+    cursor: col-resize;
+    user-select: none;
+    z-index: 2;
+
+    &:hover {
+      background: rgba($color-primary, 0.35);
+    }
+  }
+
+  &__row--reviewed {
+    background: $color-success-bg;
+  }
+
+  &__cell--flagged {
+    background: $color-warning-bg;
+    position: relative;
+
+    textarea {
+      border-color: $color-warning-border;
+    }
+  }
+
+  &__flag-badge {
+    position: absolute;
+    top: 6px;
+    right: 9px;
+    color: $color-warning-border;
+  }
+}
+
+@media (max-width: 900px) {
+  .review-page__panes {
+    flex-direction: column;
+  }
+
+  .image-pane {
+    flex: 0 0 40vh;
+  }
+}

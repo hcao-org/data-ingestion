@@ -1,0 +1,224 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #1f2933;
+  background: #f5f6f8;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+textarea {
+  font: inherit;
+  display: block;
+  width: 100%;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #cbd2d9;
+  border-radius: 4px;
+  line-height: 1.3;
+  resize: none;
+  overflow: hidden;
+}
+
+.review-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.review-page__status {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  font-size: 1.1rem;
+}
+.review-page__status--error {
+  color: #b91c1c;
+}
+.review-page__header {
+  flex-shrink: 0;
+  padding: 1rem 1.5rem;
+  background: #fff;
+  border-bottom: 1px solid #e4e7eb;
+}
+.review-page__header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.25rem;
+}
+.review-page__header p {
+  margin: 0 0 0.5rem;
+  color: #52606d;
+}
+.review-page__warnings {
+  margin: 0 0 0.5rem;
+  padding-left: 1.25rem;
+  color: #92400e;
+}
+.review-page__error {
+  color: #b91c1c;
+  font-weight: 600;
+}
+.review-page__progress {
+  font-weight: 600;
+}
+.review-page__panes {
+  flex: 1;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  min-height: 0;
+}
+.review-page__grid-wrap {
+  flex: 1 1 33%;
+  overflow: auto;
+  background: #fff;
+  border: 1px solid #e4e7eb;
+  border-radius: 6px;
+}
+.review-page__footer {
+  flex-shrink: 0;
+  padding: 1rem 1.5rem;
+  background: #fff;
+  border-top: 1px solid #e4e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+.review-page__check-all-button {
+  padding: 0.6rem 1.5rem;
+  background: #f5f6f8;
+  color: #1f2933;
+  border: 1px solid #cbd2d9;
+  border-radius: 6px;
+  font-weight: 600;
+}
+.review-page__finish-button {
+  padding: 0.6rem 1.5rem;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+}
+.review-page__finish-button:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
+}
+
+.image-pane {
+  flex: 1 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #e4e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+  min-width: 0;
+}
+.image-pane__controls {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-bottom: 1px solid #e4e7eb;
+}
+.image-pane__controls button {
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.75rem;
+  border: 1px solid #cbd2d9;
+  border-radius: 4px;
+  background: #f5f6f8;
+}
+.image-pane__viewport {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  background: #111;
+}
+.image-pane__viewport img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: 0 0;
+  user-select: none;
+}
+
+.review-grid {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9rem;
+}
+.review-grid th,
+.review-grid td {
+  border: 1px solid #e4e7eb;
+  padding: 0.4rem;
+  text-align: center;
+  vertical-align: middle;
+}
+.review-grid th {
+  background: #f5f6f8;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.review-grid th.name {
+  width: 190px;
+}
+.review-grid th.email {
+  width: 260px;
+}
+.review-grid th.city {
+  width: 155px;
+}
+.review-grid th.phone {
+  width: 145px;
+}
+.review-grid th.zip {
+  width: 75px;
+}
+.review-grid th.volunteer-interest {
+  width: 85px;
+}
+.review-grid__col-resizer {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  width: 6px;
+  height: 100%;
+  cursor: col-resize;
+  user-select: none;
+  z-index: 2;
+}
+.review-grid__col-resizer:hover {
+  background: rgba(37, 99, 235, 0.35);
+}
+.review-grid__row--reviewed {
+  background: #f0fdf4;
+}
+.review-grid__cell--flagged {
+  background: #fff7ed;
+  position: relative;
+}
+.review-grid__cell--flagged textarea {
+  border-color: #f97316;
+}
+.review-grid__flag-badge {
+  position: absolute;
+  top: 6px;
+  right: 9px;
+  color: #f97316;
+}
+
+@media (max-width: 900px) {
+  .review-page__panes {
+    flex-direction: column;
+  }
+  .image-pane {
+    flex: 0 0 40vh;
+  }
+}

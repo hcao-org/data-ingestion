@@ -1,0 +1,13 @@
+{
+  "name": "signup-review-functions",
+  "private": true,
+  "version": "0.1.0",
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "dependencies": {
+    "firebase-functions": "^5.1.0",
+    "googleapis": "^144.0.0"
+  }
+}
