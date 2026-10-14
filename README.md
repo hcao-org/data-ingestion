@@ -74,3 +74,10 @@ gcloud scheduler jobs create http ocr-drive-poll \
 You can monitor the cloud job here: 
 
 https://console.cloud.google.com/cloudscheduler?referrer=search&authuser=1&project=hcao-ocr-pipeline
+
+## How the Google Function works
+
+If you drop an image file (in the correct orientation) into the OCR-Add-Files-Here location, the next time to google function runs, it will process the file. 
+
+Once processed, the image file will be archived in the OCR-Processed folder and a google sheet with the file name [CHECK] Review [image-file-name] will be added to OCR-Ready-to-Review.
+
