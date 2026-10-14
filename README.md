@@ -15,7 +15,7 @@ The design / process flow for this is [here](documents/design.drawio.png)
 
 To test this manually, run:
 
-`google auth login`
+`gcloud auth login`
 
 to login to google cloud. Then run:
 
@@ -52,11 +52,11 @@ Change directories to src/ocr-function and run:
  --source=. \
  --entry-point=ocr_signup_sheet \
  --trigger-http \
- --timeout=300s \  
- --memory=512MB \  
- --service-account=ocr-drive-poller@hcao-ocr-pipeline.iam.gserviceaccount.com \  
+ --timeout=300s \
+ --memory=512MB \
+ --service-account=ocr-drive-poller@hcao-ocr-pipeline.iam.gserviceaccount.com \
  --set-secrets=MAKKYO_API_KEY=makkyo-api-key:latest
-```
+ ```
 
 To create the scheduled job:
 
