@@ -15,7 +15,7 @@ The design / process flow for this is [here](documents/design.drawio.png)
 
 To test this manually, run:
 
-`google auth login`
+`gcloud auth login`
 
 to login to google cloud. Then run:
 
@@ -52,11 +52,11 @@ Change directories to src/ocr-function and run:
  --source=. \
  --entry-point=ocr_signup_sheet \
  --trigger-http \
- --timeout=300s \  
- --memory=512MB \  
- --service-account=ocr-drive-poller@hcao-ocr-pipeline.iam.gserviceaccount.com \  
+ --timeout=300s \
+ --memory=512MB \
+ --service-account=ocr-drive-poller@hcao-ocr-pipeline.iam.gserviceaccount.com \
  --set-secrets=MAKKYO_API_KEY=makkyo-api-key:latest
-```
+ ```
 
 To create the scheduled job:
 
@@ -74,3 +74,10 @@ gcloud scheduler jobs create http ocr-drive-poll \
 You can monitor the cloud job here: 
 
 https://console.cloud.google.com/cloudscheduler?referrer=search&authuser=1&project=hcao-ocr-pipeline
+
+## How the Google Function works
+
+If you drop an image file (in the correct orientation) into the OCR-Add-Files-Here location, the next time to google function runs, it will process the file. DO NOT ADD FOLDERS. The google function reads files and adding folders will not work. 
+
+Once processed, the image file will be archived in the OCR-Processed folder and a google sheet with the file name [CHECK] Review [image-file-name] will be added to OCR-Ready-to-Review.
+
