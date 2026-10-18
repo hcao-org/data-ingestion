@@ -1,4 +1,6 @@
 import { fieldFlags, flagLabel } from './flags.js'
+import { pickCounty } from './countyLookup.js'
+import { OREGON_COUNTIES } from './oregonCounties.js'
 
 const COLUMNS = [
   { key: 'name', label: 'Name' },
@@ -6,6 +8,7 @@ const COLUMNS = [
   { key: 'address', label: 'Address' },
   { key: 'city', label: 'City' },
   { key: 'zip', label: 'Zip' },
+  { key: 'county', label: 'County', type: 'select', options: OREGON_COUNTIES },
   { key: 'phone', label: 'Phone' },
   { key: 'volunteerInterest', label: 'Volunteer Interest', type: 'checkbox' },
 ]
@@ -100,7 +103,7 @@ function makeColumnsResizable(table, headerCells) {
  * every keystroke/toggle, but the DOM itself is never rebuilt, so typing
  * never loses cursor position or focus.
  */
-export function createReviewGrid(rows, { onFieldChange, onToggleReviewed }) {
+export function createReviewGrid(rows, { onFieldChange, onToggleReviewed, zipCountyMap }) {
   const table = document.createElement('table')
   table.className = 'review-grid'
 
@@ -129,6 +132,10 @@ export function createReviewGrid(rows, { onFieldChange, onToggleReviewed }) {
     checkboxCell.appendChild(checkbox)
     tr.appendChild(checkboxCell)
 
+    // Set by the 'county' column below, before the 'zip' column's input
+    // handler (further down in COLUMNS) can ever fire.
+    let countySelect = null
+
     COLUMNS.forEach((column) => {
       const td = document.createElement('td')
       const flags = fieldFlags(row.flags, column.key)
@@ -144,6 +151,16 @@ export function createReviewGrid(rows, { onFieldChange, onToggleReviewed }) {
           onFieldChange(row.id, column.key, fieldCheckbox.checked)
         })
         td.appendChild(fieldCheckbox)
+      } else if (column.type === 'select') {
+        const select = document.createElement('select')
+        select.appendChild(new Option('', ''))
+        column.options.forEach((name) => select.appendChild(new Option(name, name)))
+        select.value = row[column.key] ?? ''
+        select.addEventListener('change', () => {
+          onFieldChange(row.id, column.key, select.value)
+        })
+        td.appendChild(select)
+        if (column.key === 'county') countySelect = select
       } else {
         const textarea = document.createElement('textarea')
         textarea.rows = 1
@@ -152,6 +169,14 @@ export function createReviewGrid(rows, { onFieldChange, onToggleReviewed }) {
         textarea.addEventListener('input', () => {
           onFieldChange(row.id, column.key, textarea.value)
           autoGrow(textarea)
+          // Zip is user-corrected now, so re-pick County from it - unlike the
+          // initial load, ignore whether OCR had flagged zip, since a
+          // hand-typed value supersedes that flag.
+          if (column.key === 'zip' && countySelect) {
+            const county = pickCounty(textarea.value, false, zipCountyMap)
+            countySelect.value = county
+            onFieldChange(row.id, 'county', county)
+          }
         })
         td.appendChild(textarea)
         // scrollHeight only reflects real content once the element is laid out in

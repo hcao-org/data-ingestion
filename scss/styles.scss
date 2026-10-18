@@ -41,6 +41,15 @@ textarea {
   overflow: hidden;
 }
 
+select {
+  font: inherit;
+  display: block;
+  width: 100%;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid $color-border-strong;
+  border-radius: 4px;
+}
+
 .review-page {
   display: flex;
   flex-direction: column;
@@ -208,6 +217,10 @@ textarea {
 
     &.zip {
       width: 75px;
+    }
+
+    &.county {
+      width: 130px;
     }
 
     &.volunteer-interest {

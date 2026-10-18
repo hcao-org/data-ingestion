@@ -1,6 +1,7 @@
 import { api } from './api.js'
 import { createImagePane } from './imagePane.js'
 import { createReviewGrid } from './reviewGrid.js'
+import { loadZipCountyMap } from './countyLookup.js'
 
 const root = document.getElementById('app')
 const token = new URLSearchParams(window.location.search).get('token') || 'demo-token'
@@ -23,7 +24,7 @@ function scheduleSave(data, rowId, patch, showError) {
   }, 600)
 }
 
-function render(data) {
+function render(data, zipCountyMap) {
   if (data.status === 'finished') {
     statusScreen("Thanks! This review has been submitted. You can close this page.")
     return
@@ -86,6 +87,7 @@ function render(data) {
   const imagePane = createImagePane(data.sourceImageUrl, 'Photo of the sign-up sheet')
 
   const grid = createReviewGrid(data.rows, {
+    zipCountyMap,
     onFieldChange(rowId, field, value) {
       updateRow(rowId, { [field]: value })
     },
@@ -121,7 +123,7 @@ function render(data) {
     try {
       await api.finishReview(data.token)
       data.status = 'finished'
-      render(data)
+      render(data, zipCountyMap)
     } catch {
       showError('Could not finish this review. Please try again.')
       finishButton.disabled = false
@@ -137,8 +139,8 @@ function render(data) {
 async function init() {
   statusScreen('Loading review…')
   try {
-    const data = await api.getReviewData(token)
-    render(data)
+    const [data, zipCountyMap] = await Promise.all([api.getReviewData(token), loadZipCountyMap()])
+    render(data, zipCountyMap)
   } catch {
     statusScreen('Could not load this review. The link may be invalid or expired.', true)
   }

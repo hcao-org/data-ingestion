@@ -87,6 +87,16 @@ functions/              Cloud Function backing realApi.js - see "Google Sheets
   `"{field}_{reason}"` convention, matching the one example we have
   (`phone_shape`). If the real flag vocabulary ends up different, this is the
   one place to update.
+- **County** (`js/reviewGrid.js`, `js/countyLookup.js`, `js/oregonCounties.js`):
+  a `<select>` between Zip and Phone, populated with all 36 Oregon counties.
+  It's not an OCR field - it's auto-picked from `data/oregon-zip-counties.json`,
+  a static zip→county mapping (see "Zip→county mapping data" below for where
+  that file comes from). On initial load, a row's zip flagged by OCR is left
+  blank rather than trusted for a lookup; an unflagged zip with no match in
+  the mapping is also left blank. Editing zip afterward re-runs the same
+  lookup live, clearing/reselecting County to match - but *without* the flag
+  gate, since a hand-typed zip is trusted regardless of what OCR originally
+  flagged.
 - **Editing**: the grid builds its field elements once from the initial data
   and never re-renders them - typing fires a callback but doesn't touch the
   DOM element itself, so you never lose cursor position or focus mid-edit.
@@ -132,6 +142,30 @@ folders more closely than a single-spreadsheet shortcut would.
 - **"Reviewed"** - `finishReview` *moves* (not copies) the "In Review" clone
   here via Drive's `addParents`/`removeParents`, leaving the original in "OCR
   originals" untouched.
+
+**County column is added to the clone, not the original.** "OCR originals"
+sheets have 8 columns (name, email, address, city, zip, phone,
+volunteerInterest, flags) and stay that way forever, since that folder is
+never written to. Right after `findOrCreateWorkingCopy()` copies one into "In
+Review", `addCountyColumn()` in `sheets.js` inserts a 9th column between zip
+and phone and fills it in from each row's zip, using the same zip→county
+mapping and flagged-zip-stays-blank rule as the front-end's initial auto-pick
+(see the County bullet above) - `functions/oregon-zip-counties.json` is a
+separate copy of `public/data/oregon-zip-counties.json`, kept in sync by hand
+since the two run in different JS environments (browser ESM vs. Node/CommonJS)
+with no shared build step. This only runs once, at clone-creation time; it's
+not repeated for a clone found already tagged with `originalSheetId`.
+
+**Zip→county mapping data** (`data/oregon-zip-counties.json` in both `public/`
+and `functions/`): sourced from the open-source `zipcodes` Python package's
+Oregon data (USPS-derived), with 13 retired ZIP codes left out. ZIP codes
+don't follow county lines - some cross into two counties, especially around
+Portland - so each ZIP is listed under a single "primary" county rather than
+modeling that overlap. Six ZIPs needed a hand fix: the source had no county
+for 97079, 97129, 97250, 97252, or 97475 (resolved to Washington, Washington,
+Multnomah, Multnomah, and Lane counties respectively), and 97635 (New Pine
+Creek) was listed under Modoc County, CA even though it straddles the
+Oregon–California border - moved to Lake County, OR, for its Oregon part.
 
 **The review link's `token` is the original file's Drive ID.** Rather than
 building separate token-generation infrastructure, the ID Drive already

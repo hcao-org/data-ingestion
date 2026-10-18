@@ -27,6 +27,15 @@ textarea {
   overflow: hidden;
 }
 
+select {
+  font: inherit;
+  display: block;
+  width: 100%;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #cbd2d9;
+  border-radius: 4px;
+}
+
 .review-page {
   display: flex;
   flex-direction: column;
@@ -172,6 +181,9 @@ textarea {
 }
 .review-grid th.zip {
   width: 75px;
+}
+.review-grid th.county {
+  width: 130px;
 }
 .review-grid th.volunteer-interest {
   width: 85px;

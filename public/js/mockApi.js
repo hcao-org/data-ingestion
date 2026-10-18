@@ -1,3 +1,6 @@
+import { fieldFlags } from './flags.js'
+import { loadZipCountyMap, pickCounty } from './countyLookup.js'
+
 const STORAGE_KEY_PREFIX = 'review-draft:'
 
 function loadFromStorage(token) {
@@ -16,19 +19,25 @@ function delay(ms) {
 async function buildInitialData(token) {
   const response = await fetch('data/ocr-output.json')
   const raw = await response.json()
+  const zipCountyMap = await loadZipCountyMap()
 
-  const rows = raw.rows.map((row, index) => ({
-    id: `row-${index + 1}`,
-    name: row.name ?? '',
-    email: row.email ?? '',
-    phone: row.phone ?? '',
-    address: row.address ?? '',
-    city: row.city ?? '',
-    zip: row.zip ?? '',
-    volunteerInterest: row.volunteerInterest ?? false,
-    flags: row.flags ?? [],
-    reviewed: false,
-  }))
+  const rows = raw.rows.map((row, index) => {
+    const flags = row.flags ?? []
+    const zip = row.zip ?? ''
+    return {
+      id: `row-${index + 1}`,
+      name: row.name ?? '',
+      email: row.email ?? '',
+      phone: row.phone ?? '',
+      address: row.address ?? '',
+      city: row.city ?? '',
+      zip,
+      county: pickCounty(zip, fieldFlags(flags, 'zip').length > 0, zipCountyMap),
+      volunteerInterest: row.volunteerInterest ?? false,
+      flags,
+      reviewed: false,
+    }
+  })
 
   return {
     token,
